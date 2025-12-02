@@ -20,40 +20,50 @@ const FEEDBACK_FROM_EMAIL =
   "EasyLFG Feedback <no-reply@easylfg.app>";
 
 // --- App setup ---
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+// ... other requires
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Render (and most PaaS) sit behind a proxy, so trust it
-// This lets express-rate-limit use X-Forwarded-For safely.
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // you already added this (Render/proxy)
 
-// --- Security middlewares ---
-
-// Helmet adds standard security headers.
-// CSP is disabled for now to avoid breaking local dev with inline scripts/styles.
+// 1) Security headers
 app.use(
   helmet({
     contentSecurityPolicy: false,
   })
 );
 
-// CORS (open for dev; restrict to your domain before going public)
-const allowedOrigins = [
-  "http://localhost:5500",
-  "https://easylfg-1.onrender.com",   // ✅ no /index.html here
-];
-
+// 2) CORS
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // allow curl/healthchecks
+      const allowedOrigins = [
+        "http://localhost:4000",          // optional dev API testing
+        "http://localhost:5500",          // your local static dev, if any
+        "https://easylfg-1.onrender.com", // static site
+        "https://easylfg.onrender.com"    // (for tools / future)
+      ];
+
+      // Allow curl/uptime/etc without origin
+      if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error("Not allowed by CORS"), false);
+
+      return callback(new Error("Not allowed by CORS"));
     },
   })
 );
 
+// 3) BODY PARSERS – these MUST be before your routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// 4) GENERAL rate limiter – after body parsers is fine
+app.use(generalLimiter);
 
 // --- Rate limiters ---
 
@@ -340,6 +350,7 @@ app.post("/feedback", feedbackLimiter, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`EasyLFG API running on http://localhost:${PORT}`);
 });
+
 
 
 
