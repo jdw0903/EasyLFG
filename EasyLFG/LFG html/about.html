@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About · EasyLFG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Learn about the design principles behind EasyLFG and support development."
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <div class="logo" aria-label="EasyLFG logo">
+        <div class="logo-icon">EL</div>
+        <div>
+          <div class="logo-text-title">EasyLFG</div>
+          <div class="logo-text-sub">Instant LFG for any game</div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link nav-link-active">About</a>
+    </nav>
+  </header>
+
+  <main class="main-single">
+    <section class="card about-card" aria-label="About EasyLFG">
+      <div class="card-header">
+        <div>
+          <div class="card-title">About EasyLFG</div>
+          <div class="card-subtitle">
+            A small project with simple goals: fast, private, and stress-free group finding.
+            <span id="aboutVersionBadge" style="margin-left:0.4rem; color:#9ca3af;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-body">
+        <p>
+          <strong>EasyLFG</strong> is a no-login, lightweight LFG tool for any game.
+          It’s designed so you can open the site, post what you’re playing, and
+          find people to play with in just a few clicks—no accounts, no tracking,
+          no bloat.
+        </p>
+
+        <h2>Design principles</h2>
+        <ul>
+          <li>
+            <strong>Always fast &amp; lightweight.</strong><br />
+            No heavy frameworks on the front-end, no giant bundles. The site is
+            just HTML, CSS, and vanilla JavaScript talking to a small Node/Express API.
+          </li>
+          <li>
+            <strong>No account required.</strong><br />
+            You don’t need to log in to use EasyLFG. Posts are identified with
+            a secret token stored in your browser, so you can still delete your own posts.
+          </li>
+          <li>
+            <strong>Privacy-first.</strong><br />
+            The only “contact” information you share is what you choose to put in your
+            post (like a Discord handle or Steam name). There are no trackers, no
+            social logins, and no third-party analytics baked into the UI.
+          </li>
+          <li>
+            <strong>Minimal, dark-mode by default.</strong><br />
+            The interface is intentionally clean: a single screen for creating posts
+            and browsing groups, always in dark mode so it looks good next to any game.
+          </li>
+          <li>
+            <strong>Resilient &amp; transparent.</strong><br />
+            If the backend is offline or your connection drops, EasyLFG shows clear
+            messages and keeps your last loaded results instead of silently failing.
+          </li>
+          <li>
+            <strong>Security-minded.</strong><br />
+            Input is validated and sanitized, posts are stored server-side, and
+            deletion uses per-post secret tokens so random users can’t remove
+            someone else’s listing.
+          </li>
+        </ul>
+
+        <h2>How it works</h2>
+        <p>
+          When you create a post, the server generates a unique ID and a
+          secret token. The token is stored only in your browser, and it’s
+          required to delete that post later. Posts automatically expire after
+          a configurable time-to-live (TTL), keeping the list fresh and focused
+          on people who are actually online.
+        </p>
+        <p>
+          Filters, sorting, “Now only” mode, and basic matching (by game,
+          platform, region, and time window) all run on the client, so browsing
+          feels instant even with lots of posts.
+        </p>
+
+        <h2>Build info</h2>
+        <p>
+          Current EasyLFG version:
+          <strong id="aboutVersionText">v0.1.0</strong>
+        </p>
+
+        <h2>Support EasyLFG</h2>
+        <p>
+          EasyLFG is a small side project. If you find it useful and want to help
+          with hosting costs or future improvements, you can support it here:
+        </p>
+
+        <div class="donate-wrapper">
+          <!-- Your real PayPal donate link wired in -->
+          <a
+            class="donate-button"
+            href="https://www.paypal.com/donate/?business=H875XA7T9U476&no_recurring=0&currency_code=USD"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ❤️ Donate via PayPal
+          </a>
+          <p class="donate-note">
+            Even a small donation helps keep the servers running and funds new features.
+          </p>
+        </div>
+
+        <h2>Send a suggestion</h2>
+        <p>
+          Have an idea, found a bug, or want to suggest a game-specific feature?
+          You can send feedback directly from here. Please don’t include sensitive
+          info—just what you’re comfortable sharing.
+        </p>
+
+        <div
+          id="feedbackStatus"
+          class="banner"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+        <form id="feedbackForm" class="feedback-form" autocomplete="off">
+          <div class="field-row">
+            <div>
+              <label for="feedbackType">Type</label>
+              <select id="feedbackType" name="feedbackType">
+                <option value="idea">Feature idea</option>
+                <option value="bug">Bug report</option>
+                <option value="ui">UI / UX</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="feedbackContact">Contact (optional)</label>
+              <input
+                id="feedbackContact"
+                name="feedbackContact"
+                type="text"
+                maxlength="80"
+                placeholder="Discord, email, etc."
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="feedbackMessage">Your suggestion</label>
+            <textarea
+              id="feedbackMessage"
+              name="feedbackMessage"
+              rows="4"
+              maxlength="1000"
+              placeholder="Share a feature idea, bug report, or anything else."
+            ></textarea>
+          </div>
+
+          <!-- Honeypot anti-bot field -->
+          <div class="honeypot">
+            <label for="feedbackWebsite">Website</label>
+            <input
+              id="feedbackWebsite"
+              name="feedbackWebsite"
+              type="text"
+              autocomplete="off"
+              tabindex="-1"
+            />
+          </div>
+
+          <button type="submit" class="primary" style="max-width: 220px;">
+            Send feedback
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>EasyLFG</span> · No login · Always dark · Minimal UI
+  </footer>
+
+  <script>
+    // Match this with whatever version you want to show
+    const EASYLFG_VERSION = "v0.1.0";
+    const API_BASE = "http://localhost:4000";
+
+    function initVersion() {
+      const versionText = document.getElementById("aboutVersionText");
+      const versionBadge = document.getElementById("aboutVersionBadge");
+      if (versionText) versionText.textContent = EASYLFG_VERSION;
+      if (versionBadge) versionBadge.textContent = "· " + EASYLFG_VERSION;
+    }
+
+    function showFeedbackStatus(message, type) {
+      const el = document.getElementById("feedbackStatus");
+      if (!el) return;
+      if (!message) {
+        el.style.display = "none";
+        el.textContent = "";
+        el.classList.remove("error-banner", "info-banner");
+        return;
+      }
+      el.style.display = "block";
+      el.textContent = message;
+      el.classList.remove("error-banner", "info-banner");
+      if (type === "error") {
+        el.classList.add("error-banner");
+      } else {
+        el.classList.add("info-banner");
+      }
+    }
+
+    async function initFeedbackForm() {
+      const form = document.getElementById("feedbackForm");
+      if (!form) return;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        showFeedbackStatus("", null);
+
+        const type = document.getElementById("feedbackType").value || "idea";
+        const message = (document.getElementById("feedbackMessage").value || "").trim();
+        const contact = (document.getElementById("feedbackContact").value || "").trim();
+        const honeypot = (document.getElementById("feedbackWebsite").value || "").trim();
+
+        if (!message) {
+          showFeedbackStatus("Please enter a suggestion or message.", "error");
+          return;
+        }
+
+        try {
+          const res = await fetch(API_BASE + "/feedback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type,
+              message,
+              contact,
+              page: "about",
+              url: window.location.href,
+              userAgent: navigator.userAgent,
+              honeypot,
+            }),
+          });
+
+          if (!res.ok) {
+            throw new Error("Failed to send feedback");
+          }
+
+          showFeedbackStatus("Thanks! Your feedback has been sent.", "info");
+          form.reset();
+        } catch (err) {
+          console.error(err);
+          showFeedbackStatus("Could not send feedback right now. Please try again later.", "error");
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initVersion();
+      initFeedbackForm();
+    });
+  </script>
+</body>
+</html>

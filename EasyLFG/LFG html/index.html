@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EasyLFG – Find a Group for Any Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="EasyLFG is a lightweight, no-login LFG finder for any game. Create and browse groups instantly."
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <div class="logo" aria-label="EasyLFG logo">
+        <div class="logo-icon">EL</div>
+        <div>
+          <div class="logo-text-title">EasyLFG</div>
+          <div class="logo-text-sub">Instant LFG for any game</div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html" class="nav-link nav-link-active">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Left column: Create post -->
+    <section class="card" aria-label="Create EasyLFG post">
+      <div class="card-header">
+        <div>
+          <h1 class="card-title">Create EasyLFG Post</h1>
+          <p class="card-subtitle">
+            Say what you’re playing and how to join. No account required.
+          </p>
+        </div>
+      </div>
+
+      <div id="formError" class="banner error-banner" role="alert" aria-live="polite"></div>
+
+      <form id="lfgForm" autocomplete="off">
+        <!-- Game -->
+        <div>
+          <label for="game">Game</label>
+          <input
+            type="text"
+            id="game"
+            name="game"
+            list="gameSuggestions"
+            placeholder="Left 4 Dead 2, Path of Exile, Diablo IV..."
+            required
+          />
+          <datalist id="gameSuggestions">
+            <!-- Co-op & shooters -->
+            <option value="Left 4 Dead 2"></option>
+            <option value="Left 4 Dead"></option>
+            <option value="Back 4 Blood"></option>
+            <option value="Deep Rock Galactic"></option>
+            <option value="Payday 3"></option>
+            <option value="Payday 2"></option>
+            <option value="Borderlands 3"></option>
+            <option value="Borderlands 2"></option>
+            <option value="Destiny 2"></option>
+            <option value="Warframe"></option>
+
+            <!-- ARPG / loot -->
+            <option value="Path of Exile"></option>
+            <option value="Path of Exile 2"></option>
+            <option value="Diablo II: Resurrected"></option>
+            <option value="Diablo III"></option>
+            <option value="Diablo IV"></option>
+            <option value="Last Epoch"></option>
+            <option value="Grim Dawn"></option>
+            <option value="Titan Quest"></option>
+            <option value="Lost Ark"></option>
+            <option value="Torchlight II"></option>
+            <option value="Torchlight III"></option>
+            <option value="Wolcen: Lords of Mayhem"></option>
+            <option value="The First Descendant"></option>
+            <option value="Outriders"></option>
+            <option value="Remnant II"></option>
+
+            <!-- Competitive -->
+            <option value="Valorant"></option>
+            <option value="Counter-Strike 2"></option>
+            <option value="CS2"></option>
+            <option value="Apex Legends"></option>
+            <option value="Overwatch 2"></option>
+            <option value="Rainbow Six Siege"></option>
+            <option value="Fortnite"></option>
+            <option value="PUBG"></option>
+            <option value="Call of Duty: Warzone"></option>
+            <option value="Call of Duty: Modern Warfare III"></option>
+            <option value="Rocket League"></option>
+
+            <!-- MOBA / RTS -->
+            <option value="League of Legends"></option>
+            <option value="Dota 2"></option>
+            <option value="Smite"></option>
+
+            <!-- Survival / crafting -->
+            <option value="Minecraft"></option>
+            <option value="Ark: Survival Ascended"></option>
+            <option value="Ark: Survival Evolved"></option>
+            <option value="Rust"></option>
+            <option value="7 Days to Die"></option>
+            <option value="Valheim"></option>
+            <option value="The Forest"></option>
+            <option value="Sons of the Forest"></option>
+
+            <!-- Misc / co-op -->
+            <option value="Phasmophobia"></option>
+            <option value="Sea of Thieves"></option>
+            <option value="Elden Ring"></option>
+            <option value="Monster Hunter: World"></option>
+            <option value="Monster Hunter Rise"></option>
+            <option value="GTA Online"></option>
+            <option value="Red Dead Online"></option>
+          </datalist>
+        </div>
+
+        <!-- Platform / Region -->
+        <div class="field-row">
+          <div>
+            <label for="platform">Platform</label>
+            <select id="platform" name="platform" required>
+              <option value="">Select platform</option>
+              <option value="PC">PC</option>
+              <option value="Xbox">Xbox</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="Nintendo Switch">Nintendo Switch</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Cross-play">Cross-play</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="region">Region / Time zone</label>
+            <select id="region" name="region">
+              <option value="">Any region</option>
+              <option value="NA">NA</option>
+              <option value="EU">EU</option>
+              <option value="ASIA">Asia</option>
+              <option value="SA">South America</option>
+              <option value="OCE">Oceania</option>
+              <option value="AFR">Africa</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Play style / Group size -->
+        <div class="field-row">
+          <div>
+            <label for="playstyle">Play style</label>
+            <select id="playstyle" name="playstyle">
+              <option value="">Any</option>
+              <option value="Casual">Casual</option>
+              <option value="Competitive / Ranked">Competitive / Ranked</option>
+              <option value="Grinding / Farming">Grinding / Farming</option>
+              <option value="Story / Campaign">Story / Campaign</option>
+              <option value="Custom / Private">Custom / Private</option>
+            </select>
+          </div>
+          <div>
+            <label for="groupSize">Group size needed</label>
+            <select id="groupSize" name="groupSize">
+              <option value="">Any</option>
+              <option value="+1">Need 1</option>
+              <option value="+2">Need 2</option>
+              <option value="+3">Need 3</option>
+              <option value="Full group">Full group / full lobby</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Mic / Time -->
+        <div class="field-row">
+          <div>
+            <label for="mic">Mic required?</label>
+            <select id="mic" name="mic">
+              <option value="Yes" selected>Yes</option>
+              <option value="No">No</option>
+              <option value="Preferred">Preferred</option>
+            </select>
+          </div>
+          <div>
+            <label for="timeWindow">When are you playing?</label>
+            <select id="timeWindow" name="timeWindow">
+              <option value="">Any time</option>
+              <option value="Now">Now</option>
+              <option value="Next 1–2 hours">Next 1–2 hours</option>
+              <option value="Tonight">Tonight</option>
+              <option value="This weekend">This weekend</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Contact / TTL -->
+        <div class="field-row">
+          <div>
+            <label for="contactType">Contact</label>
+            <select id="contactType" name="contactType">
+              <option value="Discord">Discord</option>
+              <option value="Steam">Steam</option>
+              <option value="Xbox">Xbox</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="Battle.net">Battle.net</option>
+              <option value="Other">Other</option>
+            </select>
+            <input
+              class="mt-025"
+              type="text"
+              id="contactValue"
+              name="contactValue"
+              maxlength="60"
+              placeholder="ex: discordname#1234"
+            />
+            <div class="inline-row mt-025">
+              <input type="checkbox" id="rememberContact" class="checkbox-sm" checked />
+              <label for="rememberContact" class="small-label">
+                Remember this contact on this device
+              </label>
+            </div>
+          </div>
+          <div>
+            <label for="ttl">Keep this post visible for</label>
+            <select id="ttl" name="ttl">
+              <option value="60">1 hour</option>
+              <option value="180">3 hours</option>
+              <option value="360">6 hours</option>
+              <option value="720">12 hours</option>
+              <option value="1440" selected>24 hours</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            maxlength="280"
+            placeholder="Example: PoE mapping on PC, chill farm, mic preferred, NA evening."
+          ></textarea>
+        </div>
+
+        <!-- Quick presets -->
+        <div>
+          <label class="small-label">Quick presets</label>
+          <div class="quick-presets" aria-label="Quick presets for common LFG posts">
+            <button type="button" data-preset="l4d2">L4D2 – Expert Campaign</button>
+            <button type="button" data-preset="poe-farm">PoE – Chill Map Farm</button>
+            <button type="button" data-preset="d4-night">Diablo IV – Night Grind</button>
+            <button type="button" data-preset="valo-ranked">Valorant – Ranked 5-stack</button>
+          </div>
+        </div>
+
+        <!-- Honeypot (hidden from humans) -->
+        <div class="honeypot">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="primary" aria-label="Post on EasyLFG">
+          Post on EasyLFG
+        </button>
+      </form>
+    </section>
+
+    <!-- Right column: Browse posts -->
+    <section class="card" aria-label="Browse EasyLFG posts">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Browse EasyLFG</h2>
+          <p class="card-subtitle">
+            Filter, sort, and find the right squad.
+          </p>
+        </div>
+      </div>
+
+      <div id="listError" class="banner error-banner" role="alert" aria-live="polite"></div>
+      <div id="offlineBanner" class="banner offline-banner">
+        You appear to be offline. Showing the last loaded results.
+      </div>
+      <div id="loadingState" class="banner loading-banner">
+        Loading posts from EasyLFG…
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <div class="pill-input">
+          <label for="filterGame">Filter by game</label>
+          <input
+            type="text"
+            id="filterGame"
+            placeholder="Search game name..."
+            list="gameSuggestions"
+            maxlength="80"
+          />
+        </div>
+
+        <div class="filters-row">
+          <div class="pill-select">
+            <label for="filterPlatform">Platform</label>
+            <select id="filterPlatform">
+              <option value="">Any</option>
+              <option value="PC">PC</option>
+              <option value="Xbox">Xbox</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="Nintendo Switch">Nintendo Switch</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Cross-play">Cross-play</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="pill-select">
+            <label for="filterRegion">Region</label>
+            <select id="filterRegion">
+              <option value="">Any</option>
+              <option value="NA">NA</option>
+              <option value="EU">EU</option>
+              <option value="ASIA">Asia</option>
+              <option value="SA">South America</option>
+              <option value="OCE">Oceania</option>
+              <option value="AFR">Africa</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-checks">
+          <div class="inline-row">
+            <input type="checkbox" id="filterMine" class="checkbox-sm" />
+            <label for="filterMine" class="small-label">
+              Show my posts only
+            </label>
+          </div>
+          <div class="inline-row">
+            <input type="checkbox" id="filterNowOnly" class="checkbox-sm" />
+            <label for="filterNowOnly" class="small-label">
+              Show only posts for <strong>Now</strong> or <strong>Next 1–2 hours</strong>
+            </label>
+          </div>
+        </div>
+
+        <div class="filters-row mt-01">
+          <div class="pill-select">
+            <label for="sortOrder">Sort</label>
+            <select id="sortOrder">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="expiresSoon">Expiring soon</option>
+              <option value="gameAZ">Game A–Z</option>
+            </select>
+          </div>
+          <div>
+            <label class="small-label">Actions</label>
+            <div class="inline-row">
+              <button id="refreshBtn" type="button" class="secondary">
+                Refresh
+              </button>
+              <button id="copySearchLinkBtn" type="button" class="subtle">
+                Copy search
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="align-right mt-03">
+          <button id="findMatchBtn" type="button" class="secondary">
+            Find best matches
+          </button>
+        </div>
+      </div>
+
+      <!-- Posts header -->
+      <div class="posts-header">
+        <h2>Open EasyLFG Posts</h2>
+        <div class="posts-count" id="postsCount">0 posts</div>
+      </div>
+
+      <!-- Match summary -->
+      <div
+        id="matchSummary"
+        class="card-subtitle"
+        style="display:none; margin-bottom:0.4rem;"
+      >
+        Showing best matches for <span id="matchSummaryText"></span>.
+        <button
+          id="clearMatchBtn"
+          type="button"
+          class="subtle"
+          style="margin-left:0.4rem; padding-inline:0.6rem;"
+        >
+          Clear
+        </button>
+      </div>
+
+      <!-- Posts list -->
+      <div id="postsList" class="posts-list"></div>
+      <div id="emptyState" class="empty-state">
+        No posts yet. Create one on the left to get started.
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="pagination">
+        <div class="pagination-left">
+          <button id="prevPage" class="secondary" type="button">Prev</button>
+          <span id="pageInfo">Page 1 / 1</span>
+          <button id="nextPage" class="secondary" type="button">Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>EasyLFG</span> · No login · Always dark · Minimal UI
+  </footer>
+
+  <!-- Main script (kept inline for simplicity) -->
+  <script>
+    const API_BASE = "http://localhost:4000";
+    const CONTACT_STORAGE_KEY = "easylfg_default_contact";
+    const TOKEN_PREFIX = "easylfg_secret_";
+    const EASYLFG_VERSION = "v0.1.0";
+
+    const form = document.getElementById("lfgForm");
+    const postsList = document.getElementById("postsList");
+    const postsCount = document.getElementById("postsCount");
+    const emptyState = document.getElementById("emptyState");
+    const formError = document.getElementById("formError");
+    const listError = document.getElementById("listError");
+    const offlineBanner = document.getElementById("offlineBanner");
+    const loadingState = document.getElementById("loadingState");
+
+    const filterGame = document.getElementById("filterGame");
+    const filterPlatform = document.getElementById("filterPlatform");
+    const filterRegion = document.getElementById("filterRegion");
+    const filterMine = document.getElementById("filterMine");
+    const filterNowOnly = document.getElementById("filterNowOnly");
+    const sortOrder = document.getElementById("sortOrder");
+
+    const refreshBtn = document.getElementById("refreshBtn");
+    const copySearchLinkBtn = document.getElementById("copySearchLinkBtn");
+    const findMatchBtn = document.getElementById("findMatchBtn");
+    const clearMatchBtn = document.getElementById("clearMatchBtn");
+    const matchSummary = document.getElementById("matchSummary");
+    const matchSummaryText = document.getElementById("matchSummaryText");
+
+    const paginationEl = document.getElementById("pagination");
+    const prevPageBtn = document.getElementById("prevPage");
+    const nextPageBtn = document.getElementById("nextPage");
+    const pageInfo = document.getElementById("pageInfo");
+
+    let lastLoadedPosts = [];
+    let currentPage = 1;
+    const PAGE_SIZE = 15;
+    let matchMode = false;
+    let matchBase = null; // post used for match scoring
+
+    function getTokenKey(postId) {
+      return TOKEN_PREFIX + postId;
+    }
+
+    function showError(el, msg) {
+      if (!el) return;
+      if (!msg) {
+        el.style.display = "none";
+        el.textContent = "";
+      } else {
+        el.style.display = "block";
+        el.textContent = msg;
+      }
+    }
+
+    function setOffline(isOffline) {
+      offlineBanner.style.display = isOffline ? "block" : "none";
+    }
+
+    function setLoading(isLoading) {
+      loadingState.style.display = isLoading ? "block" : "none";
+    }
+
+    function formatGameName(input) {
+      if (!input) return "";
+      const RAW = input.trim().toLowerCase();
+
+      const KNOWN_GAMES = {
+        "left 4 dead": "Left 4 Dead",
+        "left 4 dead 2": "Left 4 Dead 2",
+        "valorant": "Valorant",
+        "apex legends": "Apex Legends",
+        "overwatch 2": "Overwatch 2",
+        "diablo 2": "Diablo II",
+        "diablo ii": "Diablo II",
+        "diablo 3": "Diablo III",
+        "diablo iii": "Diablo III",
+        "diablo 4": "Diablo IV",
+        "diablo iv": "Diablo IV",
+        "cs2": "CS2",
+        "counter-strike 2": "Counter-Strike 2",
+        "counter strike 2": "Counter-Strike 2",
+        "league of legends": "League of Legends",
+        "rocket league": "Rocket League",
+        "elden ring": "Elden Ring",
+        "path of exile": "Path of Exile",
+        "path of exile 2": "Path of Exile 2",
+        "warframe": "Warframe",
+        "fortnite": "Fortnite"
+      };
+
+      if (KNOWN_GAMES[RAW]) return KNOWN_GAMES[RAW];
+
+      const ROMAN = /^(i|ii|iii|iv|v|vi|vii|viii|ix|x)$/i;
+      const SMALL_WORDS = new Set(["and","or","the","of","for","in","on","at","to","vs","with"]);
+
+      return RAW
+        .split(" ")
+        .map((word, idx, arr) => {
+          if (!word) return "";
+          if (ROMAN.test(word)) return word.toUpperCase();
+
+          if (SMALL_WORDS.has(word) && idx !== 0 && idx !== arr.length - 1) {
+            return word;
+          }
+
+          if (word.length <= 4 && /^[a-z]+$/.test(word)) {
+            const upper = word.toUpperCase();
+            if (upper.length >= 2) return upper;
+          }
+
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ");
+    }
+
+    function formatTime(date) {
+      return date.toLocaleTimeString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function relativeTime(date) {
+      const diffMs = Date.now() - date.getTime();
+      const diffMinutes = Math.floor(diffMs / 60000);
+      if (diffMinutes < 1) return "just now";
+      if (diffMinutes < 60) return diffMinutes + " min ago";
+      const diffHours = Math.floor(diffMinutes / 60);
+      if (diffHours < 24) return diffHours + "h ago";
+      const diffDays = Math.floor(diffHours / 24);
+      return diffDays + "d ago";
+    }
+
+    function ttlRemaining(expiresAt) {
+      const diffMs = expiresAt - Date.now();
+      if (diffMs <= 0) return "expired";
+      const diffMinutes = Math.floor(diffMs / 60000);
+      if (diffMinutes < 60) return diffMinutes + " min left";
+      const diffHours = Math.floor(diffMinutes / 60);
+      if (diffHours < 24) return diffHours + "h left";
+      const diffDays = Math.floor(diffHours / 24);
+      return diffDays + "d left";
+    }
+
+    function loadSavedContact() {
+      try {
+        const raw = localStorage.getItem(CONTACT_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (parsed.type) {
+          const typeSelect = document.getElementById("contactType");
+          if (typeSelect) typeSelect.value = parsed.type;
+        }
+        if (parsed.value) {
+          const valueInput = document.getElementById("contactValue");
+          if (valueInput) valueInput.value = parsed.value;
+        }
+      } catch (_) {}
+    }
+
+    function saveContactToLocalStorage(type, value) {
+      try {
+        const payload = JSON.stringify({ type, value });
+        localStorage.setItem(CONTACT_STORAGE_KEY, payload);
+      } catch (_) {}
+    }
+
+    async function fetchPosts() {
+      const params = new URLSearchParams();
+      const gameQuery = filterGame.value.trim();
+      if (gameQuery) params.append("game", gameQuery);
+      if (filterPlatform.value) params.append("platform", filterPlatform.value);
+      if (filterRegion.value) params.append("region", filterRegion.value);
+
+      const url = API_BASE + "/posts" + (params.toString() ? "?" + params.toString() : "");
+
+      const res = await fetch(url, { method: "GET", mode: "cors" });
+      if (!res.ok) throw new Error("Failed to load posts");
+      return res.json();
+    }
+
+    function applyClientFilters(posts) {
+      return posts.filter((post) => {
+        const tokenKey = getTokenKey(post.id);
+        const hasToken = !!localStorage.getItem(tokenKey);
+
+        if (filterMine.checked && !hasToken) return false;
+
+        if (filterNowOnly.checked) {
+          const tw = (post.timeWindow || "").toLowerCase();
+          if (!(tw === "now" || tw === "next 1–2 hours" || tw === "next 1-2 hours")) {
+            return false;
+          }
+        }
+
+        return true;
+      });
+    }
+
+    function sortPosts(posts) {
+      const order = sortOrder.value || "newest";
+      const arr = [...posts];
+
+      if (order === "newest") {
+        arr.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      } else if (order === "oldest") {
+        arr.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+      } else if (order === "expiresSoon") {
+        arr.sort((a, b) => (a.expiresAt || 0) - (b.expiresAt || 0));
+      } else if (order === "gameAZ") {
+        arr.sort((a, b) => {
+          const ga = (a.game || "").toLowerCase();
+          const gb = (b.game || "").toLowerCase();
+          return ga.localeCompare(gb);
+        });
+      }
+
+      return arr;
+    }
+
+    function computeMatchScore(base, post) {
+      if (!base || !post) return 0;
+      let score = 0;
+
+      if (base.game && post.game &&
+          base.game.toLowerCase() === post.game.toLowerCase()) score += 5;
+      if (base.platform && post.platform &&
+          base.platform === post.platform) score += 3;
+      if (base.region && post.region &&
+          base.region === post.region) score += 2;
+      if (base.playstyle && post.playstyle &&
+          base.playstyle === post.playstyle) score += 2;
+      if (base.timeWindow && post.timeWindow &&
+          base.timeWindow === post.timeWindow) score += 1;
+
+      return score;
+    }
+
+    function applyMatchMode(posts) {
+      if (!matchMode || !matchBase) return posts;
+      const arr = [...posts];
+
+      arr.forEach((p) => {
+        p.__matchScore = computeMatchScore(matchBase, p);
+      });
+
+      arr.sort((a, b) => (b.__matchScore || 0) - (a.__matchScore || 0));
+      return arr;
+    }
+
+    function paginatePosts(posts) {
+      const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const pageItems = posts.slice(start, end);
+
+      paginationEl.style.display = totalPages > 1 ? "flex" : "none";
+      pageInfo.textContent = `Page ${currentPage} / ${totalPages}`;
+      prevPageBtn.disabled = currentPage === 1;
+      nextPageBtn.disabled = currentPage === totalPages;
+
+      return pageItems;
+    }
+
+    function renderPosts(posts) {
+      postsList.innerHTML = "";
+
+      const filtered = applyClientFilters(posts);
+      const sorted = sortPosts(filtered);
+      const matched = applyMatchMode(sorted);
+      const pageItems = paginatePosts(matched);
+
+      postsCount.textContent =
+        filtered.length + (filtered.length === 1 ? " post" : " posts");
+
+      if (filtered.length === 0) {
+        emptyState.style.display = "block";
+        return;
+      }
+      emptyState.style.display = "none";
+
+      pageItems.forEach((post) => {
+        const el = document.createElement("article");
+        el.className = "post";
+
+        const createdDate = new Date(post.createdAt);
+        const ttlText = ttlRemaining(post.expiresAt);
+        const contactChip = post.contact ? `<span>Contact: ${post.contact}</span>` : "";
+        const timeChip = post.timeWindow ? `<span>Playing: ${post.timeWindow}</span>` : "";
+        const groupChip = post.groupSize ? `<span>${post.groupSize}</span>` : "";
+
+        const tokenKey = getTokenKey(post.id);
+        const hasToken = !!localStorage.getItem(tokenKey);
+        const mineBadge = hasToken
+          ? `<span class="post-badge-mine">Mine</span>`
+          : "";
+
+        const matchScore = typeof post.__matchScore === "number" ? post.__matchScore : null;
+        const matchInfo = matchMode && matchScore !== null
+          ? `<div class="post-match">Match score: ${matchScore}</div>`
+          : "";
+
+        el.innerHTML = `
+          <div class="post-main">
+            <div class="post-title">
+              <span class="post-game">${formatGameName(post.game)}</span>
+              <span class="post-platform">${post.platform}</span>
+              ${mineBadge}
+            </div>
+            <div class="post-meta">
+              ${post.region ? `<span>Region: ${post.region}</span>` : `<span>Region: Any</span>`}
+              ${post.playstyle ? `<span>${post.playstyle}</span>` : `<span>Any play style</span>`}
+              ${groupChip}
+              ${timeChip}
+              ${contactChip}
+            </div>
+            ${
+              post.description
+                ? `<div class="post-description">${post.description}</div>`
+                : ""
+            }
+          </div>
+          <div class="post-side">
+            <div class="post-mic-badge ${
+              post.mic === "Yes" || post.mic === "Preferred" ? "post-mic-yes" : ""
+            }">
+              Mic: ${post.mic}
+            </div>
+            <div class="post-ttl">${ttlText}</div>
+            <div class="post-time">
+              ${relativeTime(createdDate)} · ${formatTime(createdDate)}
+            </div>
+            ${matchInfo}
+            <div class="post-actions">
+              <button class="secondary copy-btn" type="button">Copy details</button>
+              ${
+                hasToken
+                  ? `<button class="danger delete-btn" type="button" data-id="${post.id}">Delete</button>`
+                  : ""
+              }
+            </div>
+          </div>
+        `;
+
+        const copyBtn = el.querySelector(".copy-btn");
+        if (copyBtn && navigator.clipboard) {
+          copyBtn.addEventListener("click", () => {
+            const lines = [
+              `${formatGameName(post.game)} (${post.platform})`,
+              post.playstyle ? `Style: ${post.playstyle}` : "",
+              post.region ? `Region: ${post.region}` : "",
+              post.timeWindow ? `Playing: ${post.timeWindow}` : "",
+              post.groupSize ? `Group: ${post.groupSize}` : "",
+              post.mic ? `Mic: ${post.mic}` : "",
+              post.contact ? `Contact: ${post.contact}` : "",
+              post.description || ""
+            ].filter(Boolean);
+            navigator.clipboard.writeText(lines.join("\n")).catch(() => {});
+          });
+        }
+
+        const deleteBtn = el.querySelector(".delete-btn");
+        if (deleteBtn) {
+          deleteBtn.addEventListener("click", async () => {
+            const id = deleteBtn.getAttribute("data-id");
+            await handleDelete(id);
+          });
+        }
+
+        postsList.appendChild(el);
+      });
+    }
+
+    async function handleDelete(postId) {
+      const tokenKey = getTokenKey(postId);
+      const secretToken = localStorage.getItem(tokenKey);
+      if (!secretToken) {
+        alert("You can only delete posts created from this browser.");
+        return;
+      }
+
+      if (!confirm("Delete this post? This cannot be undone.")) return;
+
+      try {
+        const res = await fetch(API_BASE + "/posts/" + encodeURIComponent(postId), {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify({ secretToken })
+        });
+
+        if (res.status === 404) {
+          localStorage.removeItem(tokenKey);
+          alert("This post no longer exists (it may have expired or the server restarted).");
+        } else if (!res.ok) {
+          throw new Error("Failed to delete");
+        } else {
+          localStorage.removeItem(tokenKey);
+        }
+
+        await loadPosts();
+      } catch (err) {
+        console.error(err);
+        alert("Could not delete post.");
+      }
+    }
+
+    async function loadPosts() {
+      try {
+        setLoading(true);
+        showError(listError, null);
+        const posts = await fetchPosts();
+        lastLoadedPosts = posts;
+        setOffline(false);
+        renderPosts(posts);
+      } catch (err) {
+        console.error(err);
+        showError(listError, "Could not load posts from server.");
+        setOffline(!navigator.onLine);
+
+        if (lastLoadedPosts.length > 0) {
+          renderPosts(lastLoadedPosts);
+        } else {
+          postsList.innerHTML = "";
+          emptyState.style.display = "block";
+          postsCount.textContent = "0 posts";
+          paginationEl.style.display = "none";
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function applyPreset(key) {
+      const gameInput = document.getElementById("game");
+      const platformInput = document.getElementById("platform");
+      const playstyleInput = document.getElementById("playstyle");
+      const timeWindowInput = document.getElementById("timeWindow");
+      const descriptionInput = document.getElementById("description");
+
+      if (!gameInput || !platformInput || !playstyleInput || !timeWindowInput || !descriptionInput) return;
+
+      if (key === "l4d2") {
+        gameInput.value = "Left 4 Dead 2";
+        platformInput.value = "PC";
+        playstyleInput.value = "Story / Campaign";
+        timeWindowInput.value = "Tonight";
+        descriptionInput.value = "L4D2 expert campaign, chill but experienced players preferred.";
+      } else if (key === "poe-farm") {
+        gameInput.value = "Path of Exile";
+        platformInput.value = "PC";
+        playstyleInput.value = "Grinding / Farming";
+        timeWindowInput.value = "Now";
+        descriptionInput.value = "PoE mapping / juice, casual farm, NA evenings.";
+      } else if (key === "d4-night") {
+        gameInput.value = "Diablo IV";
+        platformInput.value = "PC";
+        playstyleInput.value = "Grinding / Farming";
+        timeWindowInput.value = "Tonight";
+        descriptionInput.value = "Night grind, chill vibes, mic preferred.";
+      } else if (key === "valo-ranked") {
+        gameInput.value = "Valorant";
+        platformInput.value = "PC";
+        playstyleInput.value = "Competitive / Ranked";
+        timeWindowInput.value = "Now";
+        descriptionInput.value = "Ranked 5-stack, comms required, no toxicity.";
+      }
+    }
+
+    function serializeFiltersToQuery() {
+      const params = new URLSearchParams();
+      if (filterGame.value.trim()) params.set("game", filterGame.value.trim());
+      if (filterPlatform.value) params.set("platform", filterPlatform.value);
+      if (filterRegion.value) params.set("region", filterRegion.value);
+      if (filterMine.checked) params.set("mine", "1");
+      if (filterNowOnly.checked) params.set("now", "1");
+      if (sortOrder.value && sortOrder.value !== "newest") params.set("sort", sortOrder.value);
+      return params.toString();
+    }
+
+    function applyFiltersFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const game = params.get("game");
+      const platform = params.get("platform");
+      const region = params.get("region");
+      const mine = params.get("mine");
+      const nowOnly = params.get("now");
+      const sort = params.get("sort");
+
+      if (game) filterGame.value = game;
+      if (platform) filterPlatform.value = platform;
+      if (region) filterRegion.value = region;
+      filterMine.checked = mine === "1";
+      filterNowOnly.checked = nowOnly === "1";
+      if (sort) sortOrder.value = sort;
+    }
+
+    function copySearchLink() {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const query = serializeFiltersToQuery();
+      const full = query ? `${baseUrl}?${query}` : baseUrl;
+      if (!navigator.clipboard) {
+        alert("Clipboard not available in this browser.");
+        return;
+      }
+      navigator.clipboard.writeText(full).then(
+        () => alert("Search link copied."),
+        () => alert("Could not copy link.")
+      );
+    }
+
+    function enterMatchMode() {
+      if (!lastLoadedPosts.length) return;
+      const posts = applyClientFilters(sortPosts(lastLoadedPosts));
+      if (!posts.length) return;
+
+      const first = posts[0];
+      matchBase = first;
+      matchMode = true;
+
+      matchSummaryText.textContent =
+        `${formatGameName(first.game)} · ${first.platform}` +
+        (first.region ? ` · ${first.region}` : "");
+
+      matchSummary.style.display = "block";
+      currentPage = 1;
+      renderPosts(lastLoadedPosts);
+    }
+
+    function clearMatchMode() {
+      matchMode = false;
+      matchBase = null;
+      matchSummary.style.display = "none";
+      renderPosts(lastLoadedPosts);
+    }
+
+    function autocompleteGameInput(inputEl) {
+      if (!inputEl) return;
+      const value = inputEl.value.trim().toLowerCase();
+      if (!value) return;
+
+      const options = Array.from(
+        document.querySelectorAll("#gameSuggestions option")
+      ).map((opt) => opt.value);
+
+      const match = options.find(
+        (opt) => opt.toLowerCase().startsWith(value)
+      );
+
+      if (match) {
+        inputEl.value = match;
+      } else {
+        inputEl.value = formatGameName(inputEl.value);
+      }
+    }
+
+    function initGameAutocomplete() {
+      const gameInput = document.getElementById("game");
+      const searchInput = document.getElementById("filterGame");
+      if (!gameInput || !searchInput) return;
+
+      gameInput.addEventListener("blur", () => autocompleteGameInput(gameInput));
+      searchInput.addEventListener("blur", () => autocompleteGameInput(searchInput));
+
+      gameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+          autocompleteGameInput(gameInput);
+        }
+      });
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+          autocompleteGameInput(searchInput);
+        }
+      });
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      showError(formError, null);
+
+      const websiteHoneypot = document.getElementById("website").value.trim();
+      if (websiteHoneypot) {
+        showError(formError, "Invalid request.");
+        return;
+      }
+
+      const rawGame = document.getElementById("game").value.trim();
+      const game = formatGameName(rawGame);
+      const platform = document.getElementById("platform").value;
+      const region = document.getElementById("region").value;
+      const playstyle = document.getElementById("playstyle").value;
+      const groupSize = document.getElementById("groupSize").value;
+      const mic = document.getElementById("mic").value || "Preferred";
+      const contactType = document.getElementById("contactType").value;
+      const contactValue = document.getElementById("contactValue").value.trim();
+      const rememberContact = document.getElementById("rememberContact").checked;
+      const timeWindow = document.getElementById("timeWindow").value;
+      const description = document.getElementById("description").value.trim();
+      const ttlMinutes = parseInt(document.getElementById("ttl").value, 10) || 1440;
+
+      if (!game || !platform) {
+        showError(formError, "Game and platform are required.");
+        return;
+      }
+
+      if (contactType === "Discord" && contactValue &&
+          !contactValue.includes("#") && !contactValue.includes("@")) {
+        showError(formError, "Discord handles usually look like name#1234 or @name.");
+        return;
+      }
+
+      let contact = "";
+      if (contactValue) {
+        contact = contactType ? `${contactType}: ${contactValue}` : contactValue;
+      }
+
+      if (rememberContact && contactValue) {
+        saveContactToLocalStorage(contactType, contactValue);
+      }
+
+      const payload = {
+        game,
+        platform,
+        region,
+        playstyle,
+        groupSize,
+        mic,
+        contact,
+        timeWindow,
+        description,
+        ttlMinutes,
+        honeypot: websiteHoneypot
+      };
+
+      try {
+        const res = await fetch(API_BASE + "/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          mode: "cors",
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          const msg = body && body.error ? body.error : "Failed to create post";
+          throw new Error(msg);
+        }
+
+        const created = await res.json();
+
+        if (created && created.id && created.secretToken) {
+          const tokenKey = getTokenKey(created.id);
+          localStorage.setItem(tokenKey, created.secretToken);
+        }
+
+        form.reset();
+        document.getElementById("mic").value = "Yes";
+        document.getElementById("ttl").value = "1440";
+        document.getElementById("rememberContact").checked = true;
+        loadSavedContact();
+
+        currentPage = 1;
+        matchMode = false;
+        matchBase = null;
+        matchSummary.style.display = "none";
+
+        await loadPosts();
+      } catch (err) {
+        console.error(err);
+        showError(formError, err.message || "Could not create post. Is the server running?");
+      }
+    });
+
+    let filterDebounce = null;
+    function scheduleFilterReload() {
+      if (filterDebounce) clearTimeout(filterDebounce);
+      filterDebounce = setTimeout(() => {
+        currentPage = 1;
+        loadPosts();
+      }, 200);
+    }
+
+    [filterGame, filterPlatform, filterRegion, filterMine, filterNowOnly, sortOrder].forEach((el) => {
+      el.addEventListener("input", scheduleFilterReload);
+      el.addEventListener("change", scheduleFilterReload);
+    });
+
+    prevPageBtn.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPosts(lastLoadedPosts);
+      }
+    });
+
+    nextPageBtn.addEventListener("click", () => {
+      currentPage++;
+      renderPosts(lastLoadedPosts);
+    });
+
+    refreshBtn.addEventListener("click", () => {
+      currentPage = 1;
+      loadPosts();
+    });
+
+    copySearchLinkBtn.addEventListener("click", copySearchLink);
+    findMatchBtn.addEventListener("click", enterMatchMode);
+    if (clearMatchBtn) clearMatchBtn.addEventListener("click", clearMatchMode);
+
+    document.querySelectorAll(".quick-presets button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.getAttribute("data-preset");
+        applyPreset(key);
+      });
+    });
+
+    window.addEventListener("online", () => {
+      setOffline(false);
+      loadPosts();
+    });
+
+    window.addEventListener("offline", () => {
+      setOffline(true);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.key === "/") {
+        e.preventDefault();
+        filterGame.focus();
+      } else if (e.key.toLowerCase() === "n") {
+        e.preventDefault();
+        document.getElementById("game").focus();
+      } else if (e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        loadPosts();
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadSavedContact();
+      applyFiltersFromQuery();
+      initGameAutocomplete();
+      loadPosts();
+    });
+  </script>
+</body>
+</html>
