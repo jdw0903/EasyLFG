@@ -24,6 +24,10 @@ const FEEDBACK_FROM_EMAIL =
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Render (and most PaaS) sit behind a proxy, so trust it
+// This lets express-rate-limit use X-Forwarded-For safely.
+app.set("trust proxy", 1);
+
 // --- Security middlewares ---
 
 // Helmet adds standard security headers.
@@ -336,6 +340,7 @@ app.post("/feedback", feedbackLimiter, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`EasyLFG API running on http://localhost:${PORT}`);
 });
+
 
 
 
