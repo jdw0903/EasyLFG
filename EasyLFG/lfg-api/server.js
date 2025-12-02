@@ -1,6 +1,5 @@
 // Load environment variables first
 require("dotenv").config();
-console.log("DEBUG: RESEND KEY:", process.env.RESEND_API_KEY);
 
 const express = require("express");
 const cors = require("cors");
@@ -10,7 +9,6 @@ const rateLimit = require("express-rate-limit");
 const { Resend } = require("resend");
 
 // --- Email / feedback config ---
-
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FEEDBACK_TO_EMAIL =
@@ -20,57 +18,18 @@ const FEEDBACK_FROM_EMAIL =
   "EasyLFG Feedback <no-reply@easylfg.app>";
 
 // --- App setup ---
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
-// ... other requires
-
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.set("trust proxy", 1); // you already added this (Render/proxy)
-
-// 1) Security headers
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
-
-// 2) CORS
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      const allowedOrigins = [
-        "http://localhost:4000",          // optional dev API testing
-        "http://localhost:5500",          // your local static dev, if any
-        "https://easylfg-1.onrender.com", // static site
-        "https://easylfg.onrender.com"    // (for tools / future)
-      ];
-
-      // Allow curl/uptime/etc without origin
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-
-      return callback(new Error("Not allowed by CORS"));
-    },
-  })
-);
-
-// 3) BODY PARSERS – these MUST be before your routes
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// 4) GENERAL rate limiter – after body parsers is fine
-app.use(generalLimiter);
+// Render (and most PaaS) sit behind a proxy, so trust it
+app.set("trust proxy", 1);
 
 // --- Rate limiters ---
 
 // General limiter (applied to all routes)
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Max total requests per IP in window
+  max: 300,                  // Max total requests per IP in window
   standardHeaders: "draft-7",
   legacyHeaders: false,
 });
@@ -96,19 +55,55 @@ const mutatePostLimiter = rateLimit({
 // Limiter for feedback submissions
 const feedbackLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 40, // 40 feedback submissions per IP per window (very generous)
+  max: 40, // 40 feedback submissions per IP per window
   message: { error: "Too many feedback submissions, please slow down." },
   standardHeaders: "draft-7",
   legacyHeaders: false,
 });
 
-// Apply general limiter to all routes
+// --- Security middlewares ---
+
+// 1) Security headers
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // keep CSP off for now (local dev inline scripts)
+  })
+);
+
+// 2) CORS
+const allowedOrigins = [
+  "http://localhost:4000",         // optional dev / direct API testing
+  "http://localhost:5500",         // your local static dev (if used)
+  "http://localhost:3000",         // optional
+  "https://easylfg-1.onrender.com" // static site (frontend)
+  // you can later add "https://easylfg.com" here
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow tools / curl / uptime (no Origin header)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+  })
+);
+
+// 3) BODY PARSERS – must be before your routes
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// 4) GENERAL rate limiter – after body parsers is fine
 app.use(generalLimiter);
 
 // --- In-memory store ---
 
-// In-memory posts (reset when server restarts)
-let posts = [];
+let posts = []; // In-memory posts (reset when server restarts)
 
 // Simple sanitizer to trim and limit length
 function sanitizeString(value, maxLength) {
@@ -160,6 +155,8 @@ app.get("/posts", (req, res) => {
 
 // POST /posts
 app.post("/posts", createPostLimiter, (req, res) => {
+  console.log("DEBUG /posts body:", req.body); // <--- IMPORTANT for debugging
+
   const {
     game,
     platform,
@@ -350,7 +347,6 @@ app.post("/feedback", feedbackLimiter, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`EasyLFG API running on http://localhost:${PORT}`);
 });
-
 
 
 
