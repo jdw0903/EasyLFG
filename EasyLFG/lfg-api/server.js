@@ -36,27 +36,20 @@ app.use(
 
 // CORS (open for dev; restrict to your domain before going public)
 const allowedOrigins = [
-  "http://localhost:5500",                   // local dev
-  "http://localhost:3000",                   // optional dev ports
-  "https://easylfg-1.onrender.com",          // your live frontend
-  "https://easylfg.com",                     // future custom domain
+  "http://localhost:5500",
+  "https://easylfg-1.onrender.com",   // ✅ no /index.html here
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests without origin (curl, uptime monitors)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("Not allowed by CORS"));
+      if (!origin) return callback(null, true); // allow curl/healthchecks
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"), false);
     },
-    credentials: false,
   })
 );
+
 
 // --- Rate limiters ---
 
@@ -343,5 +336,6 @@ app.post("/feedback", feedbackLimiter, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`EasyLFG API running on http://localhost:${PORT}`);
 });
+
 
 
