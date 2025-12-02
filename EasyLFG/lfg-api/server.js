@@ -37,7 +37,7 @@ app.use(
 // CORS (open for dev; restrict to your domain before going public)
 const allowedOrigins = [
   "http://localhost:5500",
-  "https://easylfg-1.onrender.com",   // ✅ no /index.html here
+  "https://easylfg.onrender.com",   // ✅ no /index.html here
 ];
 
 app.use(
@@ -336,6 +336,7 @@ app.post("/feedback", feedbackLimiter, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`EasyLFG API running on http://localhost:${PORT}`);
 });
+
 
 
 
