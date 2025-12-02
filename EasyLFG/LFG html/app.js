@@ -1,5 +1,5 @@
 // ---------- Config / constants ----------
-const API_BASE = "https://easylfg-api.onrender.com";
+const API_BASE = "https://easylfg.onrender.com";
 const CONTACT_STORAGE_KEY = "easylfg_default_contact";
 const TOKEN_PREFIX = "easylfg_secret_";
 const PAGE_SIZE = 10;
@@ -945,6 +945,7 @@ window.addEventListener("offline", () => setOffline(true));
 initFiltersFromURL();
 loadSavedContact();
 loadPosts();
+
 
 
 
